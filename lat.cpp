@@ -16,7 +16,7 @@
 #define CACHE_LN_SZ 64
 // LLC Parameters assumed
 #define START_SIZE 1*MB
-#define STOP_SIZE  16*MB
+#define STOP_SIZE  64*MB
 #define MIN_LLC    256*KB
 #define MAX_STRIDE 1024
 #define INT_MIN     (-2147483647 - 1)
