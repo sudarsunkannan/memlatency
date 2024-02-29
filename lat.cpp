@@ -146,7 +146,7 @@ double MemoryTimingTest(void)
 
   for(i=START_SIZE; i<STOP_SIZE; i=i<<1) {
     ws = i;
-    arr = (struct node *)malloc(sizeof(struct node) * ws * 2);
+    arr = (struct node *)malloc(sizeof(struct node) * ws);
     //first link all the node continuos
     for(idx =1; idx < ws-1; idx++){
       arr[idx].val = 1;
