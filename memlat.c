@@ -22,7 +22,7 @@ char	*id = "$Id$\n";
 
 typedef unsigned long long uint64;
 
-#define N       1000000	/* Don't change this */
+#define N       1000000000	/* Don't change this */
 #define STRIDE  (512/sizeof(char *))
 #define	MEMTRIES	4
 #define	LOWER	512

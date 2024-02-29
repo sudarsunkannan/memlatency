@@ -204,7 +204,7 @@ double MemoryTimingTest(void)
 
 /////////////////////////////////////////////////////////
 int main(int argc, char *argv[]){
-  //LineSizeTest();
+  LineSizeTest();
   //LLCCacheSizeTest(0);
   MemoryTimingTest();
   //cout<<".........."<<endl;
