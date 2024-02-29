@@ -16,7 +16,7 @@
 #define CACHE_LN_SZ 64
 // LLC Parameters assumed
 #define START_SIZE 1*MB
-#define STOP_SIZE  64*MB
+#define STOP_SIZE  256*MB
 #define MIN_LLC    256*KB
 #define MAX_STRIDE 1024
 #define INT_MIN     (-2147483647 - 1)
@@ -54,8 +54,8 @@ void LineSizeTest(void)
     prev = retval;
     index++;
   }
-  cout << "CacheLine size " <<maxidx<<" B"<<endl;
-    free(array);
+  cout << "CacheLine size " <<maxidx/2<<" B"<<endl;
+  free(array);
 }
 
 
@@ -97,7 +97,8 @@ void LLCCacheSizeTest(unsigned int arg)
     index++;
   }
   free(array);
-  cout<<"Effective LLC Cache Size "<<maxidx/MB<<" MB"<<endl;
+  array = NULL;
+  cout<<"Effective LLC Cache Size "<<maxidx/MB/2<<" MB"<<endl;
 }
 
 /////////////////////////////////////////////////////////
@@ -139,13 +140,13 @@ double MemoryTimingTest(void)
   int j = 0,sequential=0, i=0;
   struct timespec tps, tpe;
   int index = 0;
-  unsigned long avg_memref[4],avg=0,ws=0;
+  unsigned long avg_memref[256],avg=0,ws=0;
   unsigned int idx=0;
   struct node *arr=NULL;
 
   for(i=START_SIZE; i<STOP_SIZE; i=i<<1) {
     ws = i;
-    arr = (struct node *)malloc(sizeof(struct node) * ws);
+    arr = (struct node *)malloc(sizeof(struct node) * ws * 2);
     //first link all the node continuos
     for(idx =1; idx < ws-1; idx++){
       arr[idx].val = 1;
@@ -177,8 +178,8 @@ double MemoryTimingTest(void)
 
     /*Now visit/iterate the linked list
       sum the values*/
-    register struct node *tmp = &arr[0];
-    register int val =0;
+    struct node *tmp = &arr[0];
+    int val =0;
 
     clock_gettime(CLOCK_REALTIME, &tps);
 
@@ -186,11 +187,12 @@ double MemoryTimingTest(void)
       tmp = tmp->next;
       ++tmp->val;
     }
+
     clock_gettime(CLOCK_REALTIME, &tpe);
     retval = (tpe.tv_sec-tps.tv_sec)*1000000000  + tpe.tv_nsec-tps.tv_nsec;
 
     memrefs = STEPS_N;
-    avg_memref[index] = retval/memrefs;
+    avg_memref[index] = retval/memrefs/2;
     //cout << "MemTiming test "<<avg_memref[index]<<" wss: "<<i*64<<endl;
     index++;
     free(arr);
@@ -202,11 +204,11 @@ double MemoryTimingTest(void)
 
 /////////////////////////////////////////////////////////
 int main(int argc, char *argv[]){
-  LineSizeTest();
-  LLCCacheSizeTest(0);
+  //LineSizeTest();
+  //LLCCacheSizeTest(0);
   MemoryTimingTest();
-  cout<<".........."<<endl;
-  cout<<""<<endl;
+  //cout<<".........."<<endl;
+  //cout<<""<<endl;
   return 0;
 }
 /////////////////////////////////////////////////////////
